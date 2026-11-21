@@ -1,0 +1,26 @@
+{
+  "name": "@mf-demo/shared",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "typescript": "^6.0.0"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.108.2"
+  }
+}

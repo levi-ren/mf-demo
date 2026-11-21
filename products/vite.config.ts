@@ -11,9 +11,9 @@ export default defineConfig({
     babel({ presets: [reactCompilerPreset()] }),
     tailwindcss(),
     federation({
-      dev: {
-        remoteHmr: true,
-      },
+      // dev: {
+      //   remoteHmr: true,
+      // },
       name: "products",
       filename: "remoteEntry.js",
       remotes: {
@@ -32,6 +32,7 @@ export default defineConfig({
         "react/": { singleton: true },
         "react-dom/": { singleton: true },
         "@mf-demo/shared": { singleton: true },
+        "@tanstack/react-query": { singleton: true },
       },
     }),
   ],

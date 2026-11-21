@@ -1,5 +1,4 @@
-import { queryClient } from "@mf-demo/shared";
-import { QueryClientProvider } from "@tanstack/react-query";
+import { useAuthContext } from "@mf-demo/shared";
 import "./index.css";
 import {
   useAllProducts,
@@ -12,7 +11,13 @@ const formatMoney = Intl.NumberFormat(undefined, {
   currency: "USD",
 }).format;
 
-function List() {
+type ProductListProps = {
+  authCb: () => void;
+  unAuthCb: () => void;
+};
+
+export default function ProductList({ authCb, unAuthCb }: ProductListProps) {
+  const { session } = useAuthContext();
   const products = useAllProducts();
   const isLoading = useFetchProductStatus();
   const categories = useProductCategories();
@@ -73,7 +78,17 @@ function List() {
                 {product.description}
               </h5>
               <div className="flex gap-2 items-center justify-end">
-                <button className="rounded-full px-4 py-2 shadow-md bg-amber-500 text-white text-sm">
+                <button
+                  className="rounded-full px-4 py-2 shadow-md bg-amber-500 text-white text-sm"
+                  onClick={() => {
+                    if (session?.isAuthenticated) {
+                      authCb();
+                      return;
+                    }
+
+                    unAuthCb();
+                  }}
+                >
                   Add to Cart
                 </button>
                 <button className="rounded-full px-4 py-2 shadow-md bg-sky-600 text-white text-sm">
@@ -85,12 +100,5 @@ function List() {
         ))}
       </div>
     </section>
-  );
-}
-export default function ProductList() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <List />
-    </QueryClientProvider>
   );
 }

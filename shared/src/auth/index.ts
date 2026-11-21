@@ -24,24 +24,16 @@ type User = {
   phone: string;
 };
 
-const fetchUser = (id: number, cb: () => void) =>
-  fetch(`https://fakestoreapi.com/users/${id}`)
-    .then<User>((response) => response.json())
-    .then((e) => {
-      cb();
-      return e;
-    });
+const fetchUser = (id: number) =>
+  fetch(`https://fakestoreapi.com/users/${id}`).then<User>((response) =>
+    response.json(),
+  );
 
 const useAuth = (select?: (data?: User) => User | undefined) => {
-  const { session, setSession } = useAuthContext();
+  const { session } = useAuthContext();
   return useQuery<User | undefined>({
     queryKey: [LOGIN_USER, session?.id],
-    queryFn: !!session
-      ? () =>
-          fetchUser(session.id, () =>
-            setSession({ ...session, isAuthenticated: true }),
-          )
-      : skipToken,
+    queryFn: !!session ? () => fetchUser(session.id) : skipToken,
     select,
   });
 };

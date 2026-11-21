@@ -1,4 +1,4 @@
-import { useAuthContext } from "@mf-demo/shared";
+import { useIsAuthenticated } from "@mf-demo/shared";
 import "./index.css";
 import {
   useAllProducts,
@@ -17,7 +17,7 @@ type ProductListProps = {
 };
 
 export default function ProductList({ authCb, unAuthCb }: ProductListProps) {
-  const { session } = useAuthContext();
+  const isAuth = useIsAuthenticated();
   const products = useAllProducts();
   const isLoading = useFetchProductStatus();
   const categories = useProductCategories();
@@ -81,7 +81,7 @@ export default function ProductList({ authCb, unAuthCb }: ProductListProps) {
                 <button
                   className="rounded-full px-4 py-2 shadow-md bg-amber-500 text-white text-sm"
                   onClick={() => {
-                    if (session?.isAuthenticated) {
+                    if (isAuth) {
                       authCb();
                       return;
                     }

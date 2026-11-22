@@ -4,10 +4,20 @@ import { Navigate } from "react-router";
 
 type SignInGuardProps = PropsWithChildren;
 
-export const SignInGuard = ({ children }: SignInGuardProps) => {
+export const UnauthorizedGuard = ({ children }: SignInGuardProps) => {
   const auth = useIsAuthenticated();
 
   if (auth) {
+    return <Navigate to={RoutePaths.Home} replace />;
+  }
+
+  return children;
+};
+
+export const AuthorizedGuard = ({ children }: SignInGuardProps) => {
+  const auth = useIsAuthenticated();
+
+  if (!auth) {
     return <Navigate to={RoutePaths.Home} replace />;
   }
 

@@ -2,7 +2,7 @@ import { LOGIN_USER, useAuthContext } from "@mf-demo/shared";
 import { useMutation } from "@tanstack/react-query";
 import { jwtDecode } from "jwt-decode";
 import { useActionState } from "react";
-import { SignInGuard } from "../route-guards/sign-in-guard";
+import { UnauthorizedGuard } from "../route-guards/sign-in-guard";
 
 type FormFields = {
   username: string;
@@ -56,7 +56,7 @@ const SignIn = () => {
   );
 
   return (
-    <SignInGuard>
+    <UnauthorizedGuard>
       <main className="from-amber-400 to-amber-600 bg-linear-to-tr ">
         <section className="max-w-105 ml-auto bg-white ">
           <div className="gap-y-4  shadow-2xl min-h-screen flex flex-col justify-center py-4">
@@ -108,7 +108,7 @@ const SignIn = () => {
           </div>
         </section>
       </main>
-    </SignInGuard>
+    </UnauthorizedGuard>
   );
 };
 

@@ -22,12 +22,18 @@ export default defineConfig({
           name: "products",
           entry: "http://localhost:3001/remoteEntry.js",
         },
+        cart: {
+          type: "module",
+          name: "cart",
+          entry: "http://localhost:3002/remoteEntry.js",
+        },
       },
       shared: {
         react: { singleton: true },
         "react-dom": { singleton: true },
         "react/": { singleton: true },
         "react-dom/": { singleton: true },
+        "react-router": { singleton: true },
         "@mf-demo/shared": { singleton: true },
         "@tanstack/react-query": { singleton: true },
       },

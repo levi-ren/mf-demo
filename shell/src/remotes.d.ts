@@ -9,3 +9,21 @@ declare module "products/product-list" {
 
   export default ProductList;
 }
+declare module "cart/cart-button" {
+  import type { ComponentType } from "react";
+
+  const CartButton: ComponentType;
+  const CartButtonLoader: ComponentType;
+
+  export { CartButton, CartButtonLoader };
+}
+declare module "cart/cart-page" {
+  import type { ComponentType } from "react";
+
+  const CartPage: ComponentType<{
+    mutate: (product: Product[]) => void;
+    isMutating: boolean;
+  }>;
+
+  export default CartPage;
+}

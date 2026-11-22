@@ -16,13 +16,6 @@ export default defineConfig({
       // },
       name: "products",
       filename: "remoteEntry.js",
-      remotes: {
-        shell: {
-          type: "module",
-          name: "shell",
-          entry: "http://localhost:3000/remoteEntry.js",
-        },
-      },
       exposes: {
         "./product-list": "./src/product-list.tsx",
       },

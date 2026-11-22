@@ -2,6 +2,7 @@ import {
   ADD_TO_CART,
   RoutePaths,
   useAuthUser,
+  type Cart,
   type Product,
 } from "@mf-demo/shared";
 import { useMutation } from "@tanstack/react-query";
@@ -13,6 +14,30 @@ const ProductList = lazy(() =>
     default: () => <p>Failed to load component</p>,
   })),
 );
+const CartButton = lazy(() =>
+  import("cart/cart-button")
+    .then((e) => ({ default: e.CartButton }))
+    .catch(() => ({
+      default: () => <p>Failed to load component</p>,
+    })),
+);
+const CartButtonLoader = lazy(() =>
+  import("cart/cart-button")
+    .then((e) => ({ default: e.CartButtonLoader }))
+    .catch(() => ({
+      default: () => <p>Failed to load component</p>,
+    })),
+);
+
+const CartIconComp = () => {
+  const auth = useAuthUser();
+
+  if (auth) {
+    return <CartButton />;
+  }
+
+  return null;
+};
 
 const SignInButton = () => {
   const auth = useAuthUser();
@@ -35,24 +60,12 @@ const SignInButton = () => {
   );
 };
 
-type MutateCartResponse = {
-  id: number;
-  userId: number;
-  products: Product[];
-};
-
-type MutateCartPayload = {
-  id: number;
-  userId: number;
-  products: Product[];
-};
-
-const mutateCart = (cart: MutateCartPayload) =>
+const mutateCart = (cart: Cart) =>
   fetch("https://fakestoreapi.com/carts", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(cart),
-  }).then<MutateCartResponse>((response) => {
+  }).then<Cart>((response) => {
     if (!response.ok) {
       throw new Error("Invalid parameters");
     }
@@ -62,7 +75,7 @@ const mutateCart = (cart: MutateCartPayload) =>
 const Home = () => {
   const navigate = useNavigate();
   const userId = useAuthUser()?.id;
-  const { mutate } = useMutation<MutateCartResponse, Error, Product>({
+  const { mutate } = useMutation<Cart, Error, Product>({
     mutationKey: [ADD_TO_CART],
     mutationFn: (product) => {
       if (!userId) {
@@ -75,8 +88,11 @@ const Home = () => {
   return (
     <>
       <header className="px-4 py-6 shadow ">
-        <div className="container m-auto flex items-center justify-between">
-          <h1 className="text-3xl">MF</h1>
+        <div className="container m-auto flex items-center gap-4">
+          <h1 className="text-3xl mr-auto">MF</h1>
+          <Suspense fallback={<CartButtonLoader />}>
+            <CartIconComp />
+          </Suspense>
           <SignInButton />
         </div>
       </header>

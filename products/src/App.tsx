@@ -3,29 +3,18 @@ import {
   LOGIN_USER,
   queryClient,
   useAuthUser,
+  type Cart,
   type Product,
 } from "@mf-demo/shared";
 import { useMutation } from "@tanstack/react-query";
 import ProductList from "./product-list";
 
-type MutateCartResponse = {
-  id: number;
-  userId: number;
-  products: Product[];
-};
-
-type MutateCartPayload = {
-  id: number;
-  userId: number;
-  products: Product[];
-};
-
-const mutateCart = (cart: MutateCartPayload) =>
+const mutateCart = (cart: Cart) =>
   fetch("https://fakestoreapi.com/carts", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(cart),
-  }).then<MutateCartResponse>((response) => {
+  }).then<Cart>((response) => {
     if (!response.ok) {
       throw new Error("Invalid parameters");
     }
@@ -50,7 +39,7 @@ queryClient.setQueryData([LOGIN_USER, 1], {
 
 function App() {
   const userId = useAuthUser()?.id;
-  const { mutate } = useMutation<MutateCartResponse, Error, Product>({
+  const { mutate } = useMutation<Cart, Error, Product>({
     mutationKey: [ADD_TO_CART],
     mutationFn: (product) =>
       mutateCart({ id: 1, userId: userId || 1, products: [product] }),

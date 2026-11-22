@@ -1,15 +1,12 @@
-import { useIsAuthenticated, type Product } from "@mf-demo/shared";
-import "./index.css";
 import {
+  formatMoney,
   useAllProducts,
   useFetchProductStatus,
-  useProductCategories,
-} from "./use-products";
-
-const formatMoney = Intl.NumberFormat(undefined, {
-  style: "currency",
-  currency: "USD",
-}).format;
+  useIsAuthenticated,
+  type Product,
+} from "@mf-demo/shared";
+import "./index.css";
+import { useProductCategories } from "./use-products";
 
 type ProductListProps = {
   authCb: (product: Product) => void;

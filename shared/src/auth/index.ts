@@ -31,6 +31,7 @@ const fetchUser = (id: number) =>
 
 const useAuth = (select?: (data?: User) => User | undefined) => {
   const { session } = useAuthContext();
+  console.log({ session });
   return useQuery<User | undefined>({
     queryKey: [LOGIN_USER, session?.id],
     queryFn: !!session ? () => fetchUser(session.id) : skipToken,

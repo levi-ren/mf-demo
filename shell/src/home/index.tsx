@@ -1,4 +1,10 @@
-import { RoutePaths, useAuthUser } from "@mf-demo/shared";
+import {
+  ADD_TO_CART,
+  RoutePaths,
+  useAuthUser,
+  type Product,
+} from "@mf-demo/shared";
+import { useMutation } from "@tanstack/react-query";
 import { lazy, Suspense } from "react";
 import { Link, useNavigate } from "react-router";
 
@@ -29,8 +35,43 @@ const SignInButton = () => {
   );
 };
 
+type MutateCartResponse = {
+  id: number;
+  userId: number;
+  products: Product[];
+};
+
+type MutateCartPayload = {
+  id: number;
+  userId: number;
+  products: Product[];
+};
+
+const mutateCart = (cart: MutateCartPayload) =>
+  fetch("https://fakestoreapi.com/carts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(cart),
+  }).then<MutateCartResponse>((response) => {
+    if (!response.ok) {
+      throw new Error("Invalid parameters");
+    }
+    return response.json();
+  });
+
 const Home = () => {
   const navigate = useNavigate();
+  const userId = useAuthUser()?.id;
+  const { mutate } = useMutation<MutateCartResponse, Error, Product>({
+    mutationKey: [ADD_TO_CART],
+    mutationFn: (product) => {
+      if (!userId) {
+        throw new Error("Unauthorized action");
+      }
+      return mutateCart({ id: 1, userId: userId, products: [product] });
+    },
+    onSuccess: () => alert(`Added to cart`),
+  });
   return (
     <>
       <header className="px-4 py-6 shadow ">
@@ -42,7 +83,7 @@ const Home = () => {
       <main className="py-8 px-4">
         <Suspense fallback="Loading products...">
           <ProductList
-            authCb={() => alert("Add to cart")}
+            authCb={mutate}
             unAuthCb={() => navigate(RoutePaths.SignIn)}
           />
         </Suspense>

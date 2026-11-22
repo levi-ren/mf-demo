@@ -3,7 +3,6 @@ import { createContext, PropsWithChildren, useContext, useState } from "react";
 type Session = {
   id: number;
   token: string;
-  isAuthenticated?: boolean;
 };
 
 type AuthContextType = {

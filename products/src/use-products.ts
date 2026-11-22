@@ -1,14 +1,5 @@
-import { FETCH_PRODUCTS } from "@mf-demo/shared";
+import { FETCH_PRODUCTS, type Product } from "@mf-demo/shared";
 import { useQuery } from "@tanstack/react-query";
-
-export type Product = {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-};
 
 const fetchProducts = () =>
   fetch("https://fakestoreapi.com/products").then<Product[]>((response) =>

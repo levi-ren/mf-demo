@@ -1,4 +1,4 @@
-import { useIsAuthenticated } from "@mf-demo/shared";
+import { useIsAuthenticated, type Product } from "@mf-demo/shared";
 import "./index.css";
 import {
   useAllProducts,
@@ -12,7 +12,7 @@ const formatMoney = Intl.NumberFormat(undefined, {
 }).format;
 
 type ProductListProps = {
-  authCb: () => void;
+  authCb: (product: Product) => void;
   unAuthCb: () => void;
 };
 
@@ -82,7 +82,7 @@ export default function ProductList({ authCb, unAuthCb }: ProductListProps) {
                   className="rounded-full px-4 py-2 shadow-md bg-amber-500 text-white text-sm"
                   onClick={() => {
                     if (isAuth) {
-                      authCb();
+                      authCb(product);
                       return;
                     }
 

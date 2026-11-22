@@ -20,7 +20,11 @@ export default function ProductList({ authCb, unAuthCb }: ProductListProps) {
   const categories = useProductCategories();
 
   if (isLoading) {
-    return "Skeleton...";
+    return (
+      <div className="container m-auto ">
+        <div className="border border-neutral-500 border-b-transparent rounded-full h-5 w-5 animate-spin m-auto" />
+      </div>
+    );
   }
 
   return (

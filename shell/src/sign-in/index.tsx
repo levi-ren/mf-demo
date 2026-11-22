@@ -1,7 +1,8 @@
-import { LOGIN_USER, useAuthContext } from "@mf-demo/shared";
+import { LOGIN_USER, RoutePaths, useAuthContext } from "@mf-demo/shared";
 import { useMutation } from "@tanstack/react-query";
 import { jwtDecode } from "jwt-decode";
 import { useActionState } from "react";
+import { Link } from "react-router";
 import { UnauthorizedGuard } from "../route-guards/sign-in-guard";
 
 type FormFields = {
@@ -47,7 +48,7 @@ const SignIn = () => {
         const username = String(formData.get("username"));
         const password = String(formData.get("password"));
 
-        await mutateAsync({ username, password }, { onSuccess: console.log });
+        await mutateAsync({ username, password });
       } catch (error) {
         return error instanceof Error ? error.message : "Something went wrong";
       }
@@ -60,9 +61,12 @@ const SignIn = () => {
       <main className="from-amber-400 to-amber-600 bg-linear-to-tr ">
         <section className="max-w-105 ml-auto bg-white ">
           <div className="gap-y-4  shadow-2xl min-h-screen flex flex-col justify-center py-4">
-            <div className="aspect-square w-20 flex items-center justify-center font-medium shadow-md bg-sky-600 text-white rounded-full text-2xl mx-auto mb-8">
+            <Link
+              to={RoutePaths.Home}
+              className="aspect-square w-20 flex items-center justify-center font-medium shadow-md bg-sky-600 text-white rounded-full text-2xl mx-auto mb-8"
+            >
               MF
-            </div>
+            </Link>
             <h1 className="text-3xl font-medium  px-4 ">Sign In</h1>
             <h2 className="text-sm text-neutral-500 px-4 ">
               Sign in to your account and start shopping on our endless
@@ -96,7 +100,7 @@ const SignIn = () => {
                 <input type="checkbox" /> Remember me
               </label>
               <button
-                className="shadow rounded-full bg-sky-600 px-4 py-2 text-white hover:shadow-md transition-all flex items-center gap-x-2 disabled:bg-neutral-300"
+                className="shadow rounded-full bg-sky-600 px-4 py-2 text-white hover:shadow-md transition-all flex items-center gap-x-2 disabled:bg-neutral-300 w-full justify-center"
                 disabled={isPending}
               >
                 {isPending && (

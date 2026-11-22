@@ -40,13 +40,17 @@ export default function CartPage({ mutate, isMutating }: CartPageProps) {
   const total = subtotal + SHIPPING_FEE + tax - DISCOUNT;
 
   if (isLoading) {
-    return "Loading...";
+    return (
+      <div className="container m-auto ">
+        <div className="border-2 border-neutral-400 border-b-transparent rounded-full h-5 w-5 animate-spin m-auto" />
+      </div>
+    );
   }
 
   return (
-    <main className="container m-auto p-4 space-y-4 ">
+    <section className="container m-auto p-4 space-y-4 ">
       <h1 className="text-3xl font-medium">Your Cart</h1>
-      <section className="flex gap-4 flex-col lg:flex-row">
+      <div className="flex gap-4 flex-col lg:flex-row">
         <ul className="space-y-6 flex-3">
           {productList.map((product) => (
             <li
@@ -179,7 +183,7 @@ export default function CartPage({ mutate, isMutating }: CartPageProps) {
             Terms and Conditions apply
           </em>
         </aside>
-      </section>
-    </main>
+      </div>
+    </section>
   );
 }

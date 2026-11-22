@@ -42,7 +42,13 @@ const Content = () => {
   });
   return (
     <>
-      <Suspense fallback="Loading cart...">
+      <Suspense
+        fallback={
+          <div className="container m-auto ">
+            <div className="border-2 border-neutral-400 border-b-transparent rounded-full h-5 w-5 animate-spin m-auto" />
+          </div>
+        }
+      >
         <CartPage mutate={mutate} isMutating={isPending} />
       </Suspense>
     </>
